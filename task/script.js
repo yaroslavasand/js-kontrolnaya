@@ -62,30 +62,33 @@ function render() {
 /* ---------- удаление ---------- */
 
 function removeTask(id) {
-  const task = tasks.find((t) => t.id === id);
-  tasks.splice(tasks.indexOf(task), 1);
+  const index = tasks.findIndex((t) => t.id === Number(id));
+  if (index !== -1) {
+    tasks.splice(index, 1);
+  }
   render();
 }
 
 /* ---------- сортировка по важности ---------- */
 
 sortBtn.addEventListener("click", function () {
-  tasks.sort();
+    tasks.sort((a, b) => b.priority - a.priority);
   render();
 });
 
 /* ---------- фильтр: только важные ---------- */
 
 filterBtn.addEventListener("click", function () {
-  tasks.filter((task) => task.priority >= 5);
+  tasks = tasks.filter((task) => task.priority >= 5);
   render();
 });
 
 /* ---------- счётчик нажатий ---------- */
 
+const countActions = createCounter();
+
 document.querySelectorAll(".btn").forEach((btn) => {
   btn.addEventListener("click", function () {
-    const countActions = createCounter();
     actionsEl.textContent = countActions();
   });
 });
